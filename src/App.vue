@@ -1,139 +1,162 @@
 <script setup>
-//import { ref } from 'vue'
+import { ref } from 'vue'
 
-const produtos = [
+
+const produtos = ref([
     {
-        id: 1,
         nome: 'Camiseta',
-        preco: 49.90
+        preco: 49.90,
+        quantidade: 0
     },
     {
-        id: 2,
         nome: 'Calça',
-        preco: 99.90
+        preco: 99.90,
+        quantidade: 0
     },
     {
-        id: 3,
         nome: 'Meia',
-        preco: 9.90
+        preco: 9.90,
+        quantidade: 0
     },
     {
-        id: 4,
         nome: 'Sapato',
-        preco: 199.90
+        preco: 199.90,
+        quantidade: 0
     },
     {
-        id: 5,
         nome: 'Boné',
-        preco: 29.90
+        preco: 29.90,
+        quantidade: 0
     },
     {
-        id: 6,
         nome: 'Óculos',
-        preco: 99.90
+        preco: 99.90,
+        quantidade: 0
     },
     {
-        id: 7,
         nome: 'Relógio',
-        preco: 299.90
+        preco: 299.90,
+        quantidade: 0
     },
     {
-        id: 8,
         nome: 'Bermuda',
-        preco: 79.90
+        preco: 79.90,
+        quantidade: 0
     },
     {
-        id: 9,
-        nome: 'Cueca',
-        preco: 19.90
-    },
-    {
-        id: 10,
         nome: 'Meia',
-        preco: 9.90
+        preco: 9.90,
+        quantidade: 0
     }
-]
-const carrinho = [
+])
+const carrinho = ref([
     {
-        id: 1,
         nome: 'Camiseta',
         preco: 49.90,
         quantidade: 1,
         valorTotal: 49.90
     },
     {
-        id: 2,
         nome: 'Calça',
         preco: 99.90,
         quantidade: 2,
         valorTotal: 199.80
     },
     {
-        id: 3,
         nome: 'Meia',
         preco: 9.90,
         quantidade: 4,
         valorTotal: 39.60
     }
-]
+])
 
 
 function remover(index) {
     carrinho.value.splice(index, 1)
   }
+  
+
 </script>
 
 <template>
     <div class="geral">
 
         <div class="produtos">
-            <ul>
-                <li class="itens"  v-for="(produto, index) in produtos" :key="index">
+            <h1>Produtos</h1>
+            <div class="gridProdutos">
+                <div class="itens"  v-for="(produto, index) in produtos" :key="index">
                     <p>Nome: {{ produto.nome }}</p>
                     <p>Preço: {{ produto.preco }}</p>
-                    <p>Quantidade: {{ produto.quantidade }}</p>
-                </li>
-            </ul>
+                    <button @click="adicionar">Adicionar</button>
+                </div>
+            </div>
         </div>
+        
 
         <div class="carrinho">
-            <ul>
-                <li class="itens" v-for="(item, index) in carrinho" :key="index">
+            <h2>Carrinho</h2>
+                <div class="itens" v-for="(item, index) in carrinho" :key="index">
                     <p>Nome: {{ item.nome }}</p>
                     <p>Preço: {{ item.preco }}</p>
-                    <p>Quantidade: {{ item.quantidade }}</p>
                     <button @click="remover(index)">Remover</button>
-                </li>
-            </ul>
+                    <hr>
+
+                </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+
+.produtos,.carrinho{
+    text-align: center;
+    margin: 20px;
+    margin-top: 0px;
+    width: auto;
+    height: min-content;
+    background-color: #404040;
+    border-radius: 6px;
+    color: #F2F2F2;
+}
+.gridProdutos{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+}
+
 .itens {
     width: 200px;
     padding: 10px;
-    background-color: rgb(87, 87, 87);
-    margin: 50px;
+    background-color: #262626;
+    border-radius: 6px;
+    box-shadow: #262626 2px 2px 10px;
+    margin: 20px auto;
+    font-size: 16px;
 }
 
-p {
-    color: aliceblue;
-}
-
-.abaAdicionar {
-    margin: 50px;
-    padding: 20px;
-    width: 200px;
-    background-color: rgb(0, 59, 0);
-}
-
-li {
-    list-style: none;
-}
 
 .geral {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 70% 30%;
+}
+button{
+    font-size: 17px;
+    background-color: #0D0D0D;
+    color: #9FA2A6;
+    border-radius: 6px;
+    border: none;
+    padding: 10px 20px;
+}
+button:hover{
+    transform: scale(1.02);
+    transition: 0.2s;
+}
+
+h1,h2{
+    font-size: 35px;
+    padding: 10px;
+    margin-top: 0;
+    background-color: #262626;
+    border-bottom: #0D0D0D solid 2px;
 }
 </style>
