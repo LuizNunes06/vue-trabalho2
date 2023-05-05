@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from 'vue'
 
+const novoItem = ref({
+    nome: 'asdasd',
+    preco: 0,
+    quantidade: 0,
+})
 
 const produtos = ref([
     {
@@ -72,9 +77,15 @@ const carrinho = ref([
 
 
 function remover(index) {
-    carrinho.value.splice(index, 1)
+    carrinho.value.splice(index, 1);
   }
-  
+
+  function adicionar(index) {
+    novoItem.value.nome = produtos.value[index].nome
+    carrinho.value.push(novoItem.value);
+
+  }
+
 
 </script>
 
@@ -87,7 +98,7 @@ function remover(index) {
                 <div class="itens"  v-for="(produto, index) in produtos" :key="index">
                     <p>Nome: {{ produto.nome }}</p>
                     <p>Preço: {{ produto.preco }}</p>
-                    <button @click="adicionar">Adicionar</button>
+                    <button @click="adicionar(index)">Adicionar</button>
                 </div>
             </div>
         </div>
@@ -111,10 +122,10 @@ function remover(index) {
 .produtos,.carrinho{
     text-align: center;
     margin: 20px;
-    margin-top: 0px;
+    margin-top: 20px;
     width: auto;
     height: min-content;
-    background-color: #404040;
+    
     border-radius: 6px;
     color: #F2F2F2;
 }
@@ -128,7 +139,6 @@ function remover(index) {
     width: 200px;
     padding: 10px;
     background-color: #262626;
-    border-radius: 6px;
     box-shadow: #262626 2px 2px 10px;
     margin: 20px auto;
     font-size: 16px;
@@ -156,7 +166,7 @@ h1,h2{
     font-size: 35px;
     padding: 10px;
     margin-top: 0;
-    background-color: #262626;
+    color: #0D0D0D;
     border-bottom: #0D0D0D solid 2px;
 }
 </style>
