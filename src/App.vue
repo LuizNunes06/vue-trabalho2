@@ -97,11 +97,16 @@ function decrementar(id) {
 }
 
 function adicionar(index) {
-    novoItem.value.id = produtos.value[index].id;
-    novoItem.value.nome = produtos.value[index].nome;
-    novoItem.value.preco = produtos.value[index].preco;
-    novoItem.value.quantidade = produtos.value[index].quantidade;
-    carrinho.value.push({ ...novoItem.value });
+    if(produtos.value[index].quantidade > 0){
+
+        novoItem.value.id = produtos.value[index].id;
+        novoItem.value.nome = produtos.value[index].nome;
+        novoItem.value.preco = produtos.value[index].preco;
+        novoItem.value.quantidade = produtos.value[index].quantidade;
+        carrinho.value.push({ ...novoItem.value });
+    }else{
+        alert("Selecione a quantidade do produto desejado")
+    }
 
 }
 
@@ -133,7 +138,6 @@ function adicionar(index) {
                 <p>Preço: R$ {{ produto.preco }}</p>
                 <p>Quantidade: {{ produto.quantidade }}</p>
                 <button @click="remover(index)">Remover</button>
-                <hr>
 
             </div>
         </div>
@@ -141,8 +145,7 @@ function adicionar(index) {
 </template>
 
 <style scoped>
-.produtos,
-.carrinho {
+.produtos, .carrinho {
     text-align: center;
     margin: 20px;
     margin-top: 20px;
@@ -160,12 +163,14 @@ function adicionar(index) {
 }
 
 .itens {
+    
     width: 200px;
     padding: 10px;
     background-color: #262626;
     box-shadow: #262626 2px 2px 10px;
     margin: 20px auto;
     font-size: 16px;
+    border-radius: 6px;
 }
 
 
