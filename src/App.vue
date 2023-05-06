@@ -2,53 +2,63 @@
 import { ref } from 'vue'
 
 const novoItem = ref({
-    nome: 'asdasd',
+    id: 0,
+    nome: '',
     preco: 0,
-    quantidade: 0,
+    quantidade: 1,
 })
 
 const produtos = ref([
     {
+        id: 1,
         nome: 'Camiseta',
         preco: 49.90,
         quantidade: 0
     },
     {
+        id: 2,
         nome: 'Calça',
         preco: 99.90,
         quantidade: 0
     },
     {
+        id: 3,
         nome: 'Meia',
         preco: 9.90,
         quantidade: 0
     },
     {
+        id: 4,
         nome: 'Sapato',
         preco: 199.90,
         quantidade: 0
     },
     {
+        id: 5,
         nome: 'Boné',
         preco: 29.90,
         quantidade: 0
     },
     {
+        id: 6,
         nome: 'Óculos',
         preco: 99.90,
         quantidade: 0
     },
     {
+        id: 7,
         nome: 'Relógio',
         preco: 299.90,
         quantidade: 0
     },
     {
+        id: 8,
         nome: 'Bermuda',
         preco: 79.90,
         quantidade: 0
     },
     {
+        id: 9,
         nome: 'Meia',
         preco: 9.90,
         quantidade: 0
@@ -78,13 +88,22 @@ const carrinho = ref([
 
 function remover(index) {
     carrinho.value.splice(index, 1);
-  }
+}
 
-  function adicionar(index) {
-    novoItem.value.nome = produtos.value[index].nome
-    carrinho.value.push(novoItem.value);
+function decrementar(id) {
+    if (produtos.value[id].quantidade > 0) {
+        produtos.value[id].quantidade--;
+    }
+}
 
-  }
+function adicionar(index) {
+    novoItem.value.id = produtos.value[index].id;
+    novoItem.value.nome = produtos.value[index].nome;
+    novoItem.value.preco = produtos.value[index].preco;
+    novoItem.value.quantidade = produtos.value[index].quantidade;
+    carrinho.value.push({ ...novoItem.value });
+
+}
 
 
 </script>
@@ -95,44 +114,49 @@ function remover(index) {
         <div class="produtos">
             <h1>Produtos</h1>
             <div class="gridProdutos">
-                <div class="itens"  v-for="(produto, index) in produtos" :key="index">
+                <div class="itens" v-for="(produto, index) in produtos" :key="index">
                     <p>Nome: {{ produto.nome }}</p>
-                    <p>Preço: {{ produto.preco }}</p>
+                    <p>Preço: R$ {{ produto.preco }}</p>
+                    <p>Quantidade: {{ produto.quantidade }}</p>
+                    <button @click="produto.quantidade++">+</button>
+                    <button @click="decrementar(produto.id - 1)">-</button>
                     <button @click="adicionar(index)">Adicionar</button>
                 </div>
             </div>
         </div>
-        
+
 
         <div class="carrinho">
             <h2>Carrinho</h2>
-                <div class="itens" v-for="(item, index) in carrinho" :key="index">
-                    <p>Nome: {{ item.nome }}</p>
-                    <p>Preço: {{ item.preco }}</p>
-                    <button @click="remover(index)">Remover</button>
-                    <hr>
+            <div class="itens" v-for="(produto, index) in carrinho" :key="index">
+                <p>Nome: {{ produto.nome }}</p>
+                <p>Preço: R$ {{ produto.preco }}</p>
+                <p>Quantidade: {{ produto.quantidade }}</p>
+                <button @click="remover(index)">Remover</button>
+                <hr>
 
-                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
-.produtos,.carrinho{
+.produtos,
+.carrinho {
     text-align: center;
     margin: 20px;
     margin-top: 20px;
     width: auto;
     height: min-content;
-    
+
     border-radius: 6px;
     color: #F2F2F2;
 }
-.gridProdutos{
+
+.gridProdutos {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    
+
 }
 
 .itens {
@@ -149,7 +173,9 @@ function remover(index) {
     display: grid;
     grid-template-columns: 70% 30%;
 }
-button{
+
+button {
+    margin: 5px;
     font-size: 17px;
     background-color: #0D0D0D;
     color: #9FA2A6;
@@ -157,12 +183,14 @@ button{
     border: none;
     padding: 10px 20px;
 }
-button:hover{
+
+button:hover {
     transform: scale(1.02);
     transition: 0.2s;
 }
 
-h1,h2{
+h1,
+h2 {
     font-size: 35px;
     padding: 10px;
     margin-top: 0;
