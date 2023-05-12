@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 
+
 const novoItem = ref({
     id: 0,
     nome: '',
     preco: 0,
     quantidade: 1,
+    valorTotal: 0
 })
 
 const produtos = ref([
@@ -13,76 +15,67 @@ const produtos = ref([
         id: 1,
         nome: 'Camiseta',
         preco: 49.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 2,
         nome: 'Calça',
         preco: 99.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 3,
         nome: 'Meia',
         preco: 9.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 4,
         nome: 'Sapato',
         preco: 199.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 5,
         nome: 'Boné',
         preco: 29.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 6,
         nome: 'Óculos',
         preco: 99.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 7,
         nome: 'Relógio',
         preco: 299.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 8,
         nome: 'Bermuda',
         preco: 79.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     },
     {
         id: 9,
         nome: 'Meia',
         preco: 9.90,
-        quantidade: 0
+        quantidade: 0,
+        valorTotal: 0
     }
 ])
 const carrinho = ref([
-    {
-        nome: 'Camiseta',
-        preco: 49.90,
-        quantidade: 1,
-        valorTotal: 49.90
-    },
-    {
-        nome: 'Calça',
-        preco: 99.90,
-        quantidade: 2,
-        valorTotal: 199.80
-    },
-    {
-        nome: 'Meia',
-        preco: 9.90,
-        quantidade: 4,
-        valorTotal: 39.60
-    }
 ])
 
 
@@ -97,23 +90,24 @@ function decrementar(id) {
 }
 
 function adicionar(index) {
-    if(produtos.value[index].quantidade > 0){
 
+    if (produtos.value[index].quantidade > 0) {
         novoItem.value.id = produtos.value[index].id;
         novoItem.value.nome = produtos.value[index].nome;
         novoItem.value.preco = produtos.value[index].preco;
         novoItem.value.quantidade = produtos.value[index].quantidade;
+        novoItem.value.valorTotal = produtos.value[index].quantidade * produtos.value[index].preco;
         carrinho.value.push({ ...novoItem.value });
-    }else{
+    } else {
         alert("Selecione a quantidade do produto desejado")
     }
 
 }
 
-
 </script>
 
 <template>
+
     <div class="geral">
 
         <div class="produtos">
@@ -123,6 +117,7 @@ function adicionar(index) {
                     <p>Nome: {{ produto.nome }}</p>
                     <p>Preço: R$ {{ produto.preco }}</p>
                     <p>Quantidade: {{ produto.quantidade }}</p>
+                    <p>Total: {{ (produto.quantidade * produto.preco).toFixed(2)}}</p>
                     <button @click="produto.quantidade++">+</button>
                     <button @click="decrementar(produto.id - 1)">-</button>
                     <button @click="adicionar(index)">Adicionar</button>
@@ -130,13 +125,14 @@ function adicionar(index) {
             </div>
         </div>
 
-
+        
         <div class="carrinho">
             <h2>Carrinho</h2>
             <div class="itens" v-for="(produto, index) in carrinho" :key="index">
                 <p>Nome: {{ produto.nome }}</p>
                 <p>Preço: R$ {{ produto.preco }}</p>
                 <p>Quantidade: {{ produto.quantidade }}</p>
+                <p>Total: {{ produto.valorTotal.toFixed(2) }}</p>
                 <button @click="remover(index)">Remover</button>
 
             </div>
@@ -145,7 +141,8 @@ function adicionar(index) {
 </template>
 
 <style scoped>
-.produtos, .carrinho {
+.produtos,
+.carrinho {
     text-align: center;
     margin: 20px;
     margin-top: 20px;
@@ -155,6 +152,9 @@ function adicionar(index) {
     border-radius: 6px;
     color: #F2F2F2;
 }
+p{
+    margin: 10px 0;
+}
 
 .gridProdutos {
     display: grid;
@@ -163,7 +163,7 @@ function adicionar(index) {
 }
 
 .itens {
-    
+
     width: 200px;
     padding: 10px;
     background-color: #262626;
