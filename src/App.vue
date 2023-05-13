@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 
-
+const totalCarrinho = ref(0)
+const validaCarrinho = ref(false)
 const novoItem = ref({
     id: 0,
     nome: '',
@@ -88,7 +89,6 @@ function decrementar(id) {
         produtos.value[id].quantidade--;
     }
 }
-
 function adicionar(index) {
 
     if (produtos.value[index].quantidade > 0) {
@@ -97,17 +97,21 @@ function adicionar(index) {
         novoItem.value.preco = produtos.value[index].preco;
         novoItem.value.quantidade = produtos.value[index].quantidade;
         novoItem.value.valorTotal = produtos.value[index].quantidade * produtos.value[index].preco;
+        totalCarrinho.value += novoItem.value.valorTotal
         carrinho.value.push({ ...novoItem.value });
     } else {
         alert("Selecione a quantidade do produto desejado")
     }
 
 }
-
+function carrinhoVazio() {
+    if (carrinho.value.length == 0) {
+        return true
+    }
+}
 </script>
 
 <template>
-
     <div class="geral">
 
         <div class="produtos">
@@ -117,7 +121,7 @@ function adicionar(index) {
                     <p>Nome: {{ produto.nome }}</p>
                     <p>Preço: R$ {{ produto.preco }}</p>
                     <p>Quantidade: {{ produto.quantidade }}</p>
-                    <p>Total: {{ (produto.quantidade * produto.preco).toFixed(2)}}</p>
+                    <p>Total: R$ {{ (produto.quantidade * produto.preco).toFixed(2) }}</p>
                     <button @click="produto.quantidade++">+</button>
                     <button @click="decrementar(produto.id - 1)">-</button>
                     <button @click="adicionar(index)">Adicionar</button>
@@ -125,35 +129,81 @@ function adicionar(index) {
             </div>
         </div>
 
-        
-        <div class="carrinho">
+        <button v-if="validaCarrinho == false" class="btnCarrinhoUm"
+            @click="validaCarrinho = !validaCarrinho">Carrinho</button>
+        <div v-if="validaCarrinho" class="carrinho">
             <h2>Carrinho</h2>
-            <div class="itens" v-for="(produto, index) in carrinho" :key="index">
-                <p>Nome: {{ produto.nome }}</p>
-                <p>Preço: R$ {{ produto.preco }}</p>
-                <p>Quantidade: {{ produto.quantidade }}</p>
-                <p>Total: {{ produto.valorTotal.toFixed(2) }}</p>
-                <button @click="remover(index)">Remover</button>
 
+            <button class="btnCarrinho" @click="validaCarrinho = !validaCarrinho">Fechar carrinho</button>
+            <p class="textoCarrinho">Valor total: R$ {{ totalCarrinho.toFixed(2) }}</p>
+            <div class="scrollCarrinho">
+                <p v-if="carrinhoVazio()" class="msgCarrinhoVazio">Carrinho está vazio!</p>
+                <div class="itens" v-for="(produto, index) in carrinho" :key="index">
+                    <p>Nome: {{ produto.nome }}</p>
+                    <p>Preço: R$ {{ produto.preco }}</p>
+                    <p>Quantidade: {{ produto.quantidade }}</p>
+                    <p>Total: R$ {{ produto.valorTotal.toFixed(2) }}</p>
+                    <button @click="remover(index)">Remover</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.btnCarrinho {
+    width: max-content;
+    height: max-content;
+}
+
+.btnCarrinhoUm {
+    width: min-content;
+    height: max-content;
+    right: 10px;
+    position: fixed;
+
+}
+
 .produtos,
 .carrinho {
     text-align: center;
     margin: 20px;
     margin-top: 20px;
     width: auto;
-    height: min-content;
-
+    height: auto;
     border-radius: 6px;
     color: #F2F2F2;
+
 }
-p{
+
+.scrollCarrinho {
+    top: 10px;
+    height: 116vh;
+    overflow-y: auto;
+}
+
+p {
     margin: 10px 0;
+}
+
+.textoCarrinho {
+    width: max-content;
+    padding: 10px;
+    background-color: #262626;
+    box-shadow: #262626 2px 2px 10px;
+    margin: 20px auto;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+.msgCarrinhoVazio {
+    width: max-content;
+    padding: 10px;
+    background-color: #6d0000;
+    box-shadow: #262626 2px 2px 10px;
+    margin: 20px auto;
+    font-size: 16px;
+    border-radius: 6px;
 }
 
 .gridProdutos {
@@ -176,7 +226,7 @@ p{
 
 .geral {
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: auto auto;
 }
 
 button {
@@ -201,5 +251,4 @@ h2 {
     margin-top: 0;
     color: #0D0D0D;
     border-bottom: #0D0D0D solid 2px;
-}
-</style>
+}</style>
