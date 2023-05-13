@@ -1,4 +1,7 @@
 <script setup>
+
+//Link do surge: "https://luiz-vue-trabalho2.surge.sh/"
+
 import { ref } from 'vue'
 
 const totalCarrinho = ref(0)
