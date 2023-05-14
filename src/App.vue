@@ -1,7 +1,7 @@
 <script setup>
 
 //Link do surge: "https://luiz-vue-trabalho2.surge.sh/"
-
+const teste = ref(9999999)
 import { ref } from 'vue'
 
 const totalCarrinho = ref(0)
@@ -86,7 +86,6 @@ const carrinho = ref([
 function remover(index) {
     carrinho.value.splice(index, 1);
 }
-
 function decrementar(id) {
     if (produtos.value[id].quantidade > 0) {
         produtos.value[id].quantidade--;
@@ -100,7 +99,7 @@ function adicionar(index) {
         novoItem.value.preco = produtos.value[index].preco;
         novoItem.value.quantidade = produtos.value[index].quantidade;
         novoItem.value.valorTotal = produtos.value[index].quantidade * produtos.value[index].preco;
-        totalCarrinho.value += novoItem.value.valorTotal
+        totalCarrinho.value += novoItem.value.valorTotal;
         carrinho.value.push({ ...novoItem.value });
     } else {
         alert("Selecione a quantidade do produto desejado")
@@ -139,6 +138,7 @@ function carrinhoVazio() {
 
             <button class="btnCarrinho" @click="validaCarrinho = !validaCarrinho">Fechar carrinho</button>
             <p class="textoCarrinho">Valor total: R$ {{ totalCarrinho.toFixed(2) }}</p>
+            <p class="textoCarrinho">{{ teste }}</p>
             <div class="scrollCarrinho">
                 <p v-if="carrinhoVazio()" class="msgCarrinhoVazio">Carrinho está vazio!</p>
                 <div class="itens" v-for="(produto, index) in carrinho" :key="index">
@@ -146,7 +146,7 @@ function carrinhoVazio() {
                     <p>Preço: R$ {{ produto.preco }}</p>
                     <p>Quantidade: {{ produto.quantidade }}</p>
                     <p>Total: R$ {{ produto.valorTotal.toFixed(2) }}</p>
-                    <button @click="remover(index)">Remover</button>
+                    <button @click="remover(index), totalCarrinho -= produto.valorTotal">Remover</button>
                 </div>
             </div>
         </div>
