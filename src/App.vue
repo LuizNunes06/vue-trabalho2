@@ -1,7 +1,6 @@
 <script setup>
 
 //Link do surge: "https://luiz-vue-trabalho2.surge.sh/"
-const teste = ref(9999999)
 import { ref } from 'vue'
 
 const totalCarrinho = ref(0)
@@ -138,7 +137,6 @@ function carrinhoVazio() {
 
             <button class="btnCarrinho" @click="validaCarrinho = !validaCarrinho">Fechar carrinho</button>
             <p class="textoCarrinho">Valor total: R$ {{ totalCarrinho.toFixed(2) }}</p>
-            <p class="textoCarrinho">{{ teste }}</p>
             <div class="scrollCarrinho">
                 <p v-if="carrinhoVazio()" class="msgCarrinhoVazio">Carrinho está vazio!</p>
                 <div class="itens" v-for="(produto, index) in carrinho" :key="index">
